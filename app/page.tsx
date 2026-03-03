@@ -31,7 +31,7 @@ const audioRef = useRef<HTMLAudioElement | null>(null);
   useEffect(() => {
     fetch("/api/flag")
       .then((res) => res.json())
-      .then((data) => {
+      .then(() => {
         setPhase("typing");
       });
   }, []); 
