@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "✨ Love's Silent Whisper ✨",
+  title: "✨ 404: Distance Not Found ✨",
   description: "The silence often of pure innocence persuades, when speaking fails.",
 };
 
@@ -24,9 +24,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
+      style={{ backgroundColor: "#f8a4c1" }}>
         {children}
       </body>
     </html>

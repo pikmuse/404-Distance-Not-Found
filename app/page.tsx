@@ -2,13 +2,13 @@
 import { useEffect, useState, useRef } from "react";
 import { lines } from "./data";
 
-const QUESTION = "Password: Hello World";
-const CORRECT_ANSWER = "Hello World"; 
+const QUESTION = "Password: My World";
+const CORRECT_ANSWER = "YOU STUPID!"; 
 
 
 function Home() {
   const scrollRef = useRef<HTMLDivElement>(null)
-
+const audioRef = useRef<HTMLAudioElement | null>(null);
   // ========== Animation Parameters ==========
   const typingSpeed = 50; // Typing speed
   const cursorBlinkSpeed = 500; // Cursor blink interval
@@ -32,9 +32,15 @@ function Home() {
     fetch("/api/flag")
       .then((res) => res.json())
       .then((data) => {
-        setPhase(data.status === "read" ? "done" : "typing");
+        setPhase("typing");
       });
-  }, []);
+  }, []); 
+  useEffect(() => {
+  if (phase === "typing" && audioRef.current) {
+    audioRef.current.loop = true;
+    audioRef.current.play().catch(() => {});
+  }
+}, [phase]);
 
   const markAsRead = () => {
     fetch("/api/flag", { method: "POST" })
@@ -161,13 +167,15 @@ function Home() {
 
 
   return (
-    <div className="min-h-screen bg-black p-8">
+    <div className="min-h-screen p-8">
+      <audio ref={audioRef} src="/love.mp3" />
       {
         phase !== "done" && (
           <div
           ref={scrollRef}
           className="text-white text-xl leading-8 whitespace-pre-wrap overflow-y-auto max-h-[80vh] w-full px-4 border border-gray-600 rounded-md content"
           style={{
+            backgroundColor: "#D3011C",
             padding: "16px",
             height: "80vh",
             paddingBottom: "80px",
@@ -203,9 +211,12 @@ function Home() {
       }
       {
         phase === "done" && (
-          <div className="text-white text-xl leading-8 whitespace-pre-wrap overflow-y-auto max-h-[80vh] w-full px-4  border-gray-600 rounded-md text-center">
-            Best wishes to you
-          </div>
+          <div
+  className="text-white text-xl leading-8 whitespace-pre-wrap overflow-y-auto max-h-[80vh] w-full px-4 border border-gray-600 rounded-md content"
+  style={{ backgroundColor: "#D3011C" }}
+>
+  I LOVE YOU
+</div>
         )
       }
      
@@ -233,8 +244,8 @@ export default function App() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-black text-white">
-      <div className="p-6 rounded-lg shadow-lg w-96" style={{ backgroundColor: "#2b2d37" }}>
+    <div className="flex min-h-screen items-center justify-center text-white">
+      <div className="p-6 rounded-lg shadow-lg w-96" style={{ backgroundColor: "#D3011C" }}>
         <h1 className="text-2xl font-bold mb-4 text-center">{QUESTION}</h1>
         <input
           type="text"
